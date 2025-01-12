@@ -1,0 +1,4 @@
+(library
+ (name data)
+ (libraries)
+ (modules header_template))

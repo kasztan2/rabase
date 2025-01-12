@@ -1,0 +1,6 @@
+!*
+_build/
+_opam/
+*.db
+*.index
+test_db/

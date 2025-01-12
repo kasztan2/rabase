@@ -1,0 +1,4 @@
+(library
+ (name serialization)
+ (libraries)
+ (modules basic_types))
