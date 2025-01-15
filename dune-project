@@ -19,7 +19,11 @@
  (name rabase)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune)
+ (depends
+  (ocaml
+   (>= 5.3))
+  dune
+  stdint)
  (tags
   (topics "to describe" your project)))
 
