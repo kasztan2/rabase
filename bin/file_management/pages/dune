@@ -1,4 +1,4 @@
 (library
  (name pages)
  (libraries)
- (modules pages))
+ (modules pages_handlers))

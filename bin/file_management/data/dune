@@ -1,4 +1,4 @@
 (library
  (name data)
- (libraries)
- (modules header_template))
+ (libraries stdint)
+ (modules header_template index_types))

@@ -23,8 +23,12 @@
   (ocaml
    (>= 5.3))
   dune
-  stdint)
+  stdint
+  (core
+   (= v0.15.0)))
  (tags
   (topics "to describe" your project)))
+
+(using menhir 3.0)
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html

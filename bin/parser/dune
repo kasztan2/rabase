@@ -1,0 +1,9 @@
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
+
+(library
+ (name sparql_parser)
+ (modules parser lexer sparql_ast parse)
+ (libraries core))

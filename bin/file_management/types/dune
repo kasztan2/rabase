@@ -1,0 +1,4 @@
+(library
+ (name types)
+ (libraries stdint)
+ (modules basic page_types))
