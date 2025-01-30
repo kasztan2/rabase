@@ -146,17 +146,18 @@ Pages are split only if data about to be inserted cannot fit (there is _de facto
 
 #### Interior Page Structure
 
-| Section                                 | Size (Bytes)            | Description                                    |
-| --------------------------------------- | ----------------------- | ---------------------------------------------- |
-| **Header**                              | **7 bytes**             |                                                |
-| - Order                                 | 2 bytes                 | Specifies the order of this page (index type). |
-| - Page type                             | 1 byte                  | Always `0` for interior pages.                 |
-| - Sibling                               | 4 bytes                 | Ignored for interior pages.                    |
-| **Content**                             | **Rest**                |                                                |
-| - Keys Count                            | 2 bytes                 | Number of keys stored ($N$).                   |
-| - Child Page Numbers & Pointers to Keys | $(N+1) * 4 + N*2$ bytes | List: `(PageNumber, Pointer)*N, PageNumber`.   |
-| - Free Space                            | Variable                | Used to align keys at the end of the page.     |
-| - Keys                                  | Depends on data         | Keys in order.                                 |
+| Section              | Size (Bytes)      | Description                                    |
+| -------------------- | ----------------- | ---------------------------------------------- |
+| **Header**           | **7 bytes**       |                                                |
+| - Order              | 2 bytes           | Specifies the order of this page (index type). |
+| - Page type          | 1 byte            | Always `0` for interior pages.                 |
+| - Sibling            | 4 bytes           | Ignored for interior pages.                    |
+| **Content**          | **Rest**          |                                                |
+| - Keys Count         | 2 bytes           | Number of keys stored ($N$).                   |
+| - Child Page Numbers | $(N+1) * 4$ bytes |                                                |
+| - Pointers to Keys   | $N*2$ bytes       |                                                |
+| - Free Space         | Variable          | Used to align keys at the end of the page.     |
+| - Keys               | Depends on data   | Keys in order.                                 |
 
 #### Leaf Page Structure
 
@@ -168,6 +169,6 @@ Pages are split only if data about to be inserted cannot fit (there is _de facto
 | - Sibling                         | 4 bytes              | Page number of the next sibling.               |
 | **Content**                       | **Rest**             |                                                |
 | - Item Count                      | 2 bytes              | Number of items stored ($N$).                  |
-| - Pointer to Items                | $N * 4$ bytes        | Pointers to items.                             |
+| - Pointers to Items               | $N * 4$ bytes        | Pointers to items.                             |
 | - Free Space                      | Variable             | Used to align items at the end of the page.    |
 | - List of keys and values (items) | Depends on data type | Items (key + value) ordered by key             |
