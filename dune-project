@@ -25,7 +25,11 @@
   dune
   stdint
   (core
-   (= v0.15.0)))
+   (= v0.15.0))
+  (opium
+   (>= 0.20.0))
+  (ppx_deriving
+   (>= 6.0.3)))
  (tags
   (topics "to describe" your project)))
 

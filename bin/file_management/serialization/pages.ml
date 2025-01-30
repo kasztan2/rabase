@@ -65,7 +65,7 @@ let to_dl bts =
   in
   { index_type; sibling_page_number; triples }
 
-let from_ti (p: 'a translation_interior_page) =
+let from_ti (p : 'a translation_interior_page) =
   let buf = Buffer.create 4096 in
   let add = Buffer.add_bytes buf in
   add (B.from_uint16 p.index_type);
@@ -73,8 +73,8 @@ let from_ti (p: 'a translation_interior_page) =
   add (Bytes.make 4 '\000');
   add (List.length p.keys |> Stdint.Uint16.of_int |> B.from_uint16);
   match Data.Index_types.get_key_length p.index_type with
-  | Some _ -> ...
-  | None -> ...
+  | Some _ -> 1
+  | None -> 2
 
 let to_bytes : type a. a page -> a -> bytes =
  fun t v ->

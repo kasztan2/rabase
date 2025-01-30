@@ -1,4 +1,5 @@
 (executable
  (public_name rabase)
  (name main)
- (libraries rabase file_management network))
+ (preprocess (pps ppx_deriving.show))
+ (libraries rabase file_management network sparql_parser))

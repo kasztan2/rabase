@@ -1,1 +1,1 @@
-val test : string -> Sparql_ast.query option
+val parse : string -> Sparql_ast.query option

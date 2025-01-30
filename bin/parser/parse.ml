@@ -14,9 +14,10 @@ let parse_with_error lexbuf =
       None
   | Parser.Error ->
       fprintf stderr "%a: syntax error\n" print_position lexbuf;
-      exit (-1)
+      (* exit (-1) *)
+      None
 
-let test s =
+let parse s =
   let lexbuf = Lexing.from_string s in
   (*match parse_with_error lexbuf with
     | None -> print_string "None"
