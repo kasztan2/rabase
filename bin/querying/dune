@@ -1,4 +1,6 @@
 (library
  (name querying)
- (preprocess (pps ppx_deriving.show))
- (libraries sparql_parser))
+ (preprocess
+  (pps ppx_deriving.show))
+ (libraries sparql_parser)
+ (modules query_plan))
