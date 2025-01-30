@@ -14,7 +14,10 @@ let query_logic query_m =
     | Some x -> x
     | None -> failwith "Error: query parsing failed"
   in
-  let query_plan = Querying.Query_plan.make_query_plan parsed in
+  let query_plan =
+    try Querying.Query_plan.make_query_plan parsed
+    with Failure x -> failwith ("Error: in query plan: " ^ x)
+  in
   let%lwt () = Lwt_io.printl (Querying.Query_plan.show_query_plan query_plan) in
   Lwt.return "Parsed"
 
