@@ -72,7 +72,7 @@ let from_ti (p : 'a translation_interior_page) =
   add (Bytes.make 1 '\000');
   add (Bytes.make 4 '\000');
   add (List.length p.keys |> Stdint.Uint16.of_int |> B.from_uint16);
-  match Data.Index_types.get_key_length p.index_type with
+  match Index_types.get_key_length p.index_type with
   | Some _ -> 1
   | None -> 2
 

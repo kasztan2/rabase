@@ -1,4 +1,4 @@
 (library
  (name network)
  (preprocess (pps lwt_ppx))
- (libraries file_management opium sparql_parser querying))
+ (libraries init opium sparql_parser querying))

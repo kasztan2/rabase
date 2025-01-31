@@ -1,4 +1,0 @@
-(library
- (name effects)
- (libraries types)
- (modules io))

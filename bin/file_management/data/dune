@@ -1,4 +1,0 @@
-(library
- (name data)
- (libraries stdint)
- (modules header_template index_types))

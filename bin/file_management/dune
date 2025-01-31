@@ -1,4 +1,0 @@
-(library
- (name file_management)
- (libraries data integrity types effects serialization)
- (modules file_basic))

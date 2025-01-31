@@ -1,4 +1,4 @@
 (library
  (name serialization)
- (libraries stdint types data)
+ (libraries stdint types)
  (modules basic_types))

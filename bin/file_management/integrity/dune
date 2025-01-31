@@ -1,4 +1,0 @@
-(library
- (name integrity)
- (libraries)
- (modules integrity))

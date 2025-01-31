@@ -1,4 +1,4 @@
-open Data.Header_template
+open Header_template
 
 type db_description = { ic : in_channel; oc : out_channel }
 

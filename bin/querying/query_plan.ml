@@ -90,8 +90,6 @@ let rec make_query_plan_select ast =
             let cur_vars = get_triple_vars_strings triple in
             let common_vars = StringSet.inter known_vars cur_vars in
             let new_known_vars = StringSet.union cur_vars known_vars in
-            StringSet.iter (fun x -> print_endline x) known_vars;
-            StringSet.iter (fun x -> print_endline x) cur_vars;
             match StringSet.cardinal common_vars with
             | 0 -> (new_known_vars, CrossJoin (tree, leaf))
             | _ ->
