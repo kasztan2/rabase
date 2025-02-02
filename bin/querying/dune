@@ -3,4 +3,4 @@
  (preprocess
   (pps ppx_deriving.show))
  (libraries sparql_parser types stdint)
- (modules query_plan dataframe))
+ (modules query_plan query_plan_types dataframe actions))

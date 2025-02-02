@@ -1,0 +1,4 @@
+(library
+ (name pages)
+ (libraries stdint types)
+ (modules page_handler page_handlers))

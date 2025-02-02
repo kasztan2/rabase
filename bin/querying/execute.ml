@@ -1,4 +1,4 @@
-open Query_plan
+open Query_plan_types
 
 let execute_select query_plan =
   match query_plan with

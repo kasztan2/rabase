@@ -1,5 +1,5 @@
 type triple = Stdint.uint64 * Stdint.uint64 * Stdint.uint64
-type index_type = Stdint.uint16
+type index_type = Stdint.uint8
 type page_num = Stdint.uint32
 
 type header_page = {
@@ -21,24 +21,13 @@ type data_leaf_page = {
   triples : triple list;
 }
 
-type 'a translation_interior_page = {
-  index_type : index_type;
+type translation_page = {
+  is_from_id : bool;
   child_page_numbers : page_num list;
-  keys : 'a list;
+  items : (Stdint.uint64 * Basic.basic_types) list;
 }
 
-type ('a, 'b) translation_leaf_page = {
-  index_type : index_type;
-  sibling_page_number : page_num;
-  items : ('a * 'b) list;
-}
-
-type _ page =
-  | Page_data_interior : data_interior_page -> data_interior_page page
-  | Page_data_leaf : data_leaf_page -> data_leaf_page page
-  | Page_translation_interior :
-      'a translation_interior_page
-      -> 'a translation_interior_page page
-  | Page_translation_leaf :
-      ('a, 'b) translation_leaf_page
-      -> ('a, 'b) translation_leaf_page page
+type page =
+  | Page_data_interior of data_interior_page
+  | Page_data_leaf of data_leaf_page
+  | Page_translation of translation_page
