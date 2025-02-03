@@ -7,5 +7,21 @@ module type PageHandler = sig
   val get_val : page_type -> key_type -> val_type option
   val get_child : page_type -> key_type -> page_type option
   val is_leaf : page_type -> bool
-  val insert : page_type -> key_type -> val_type -> unit
+
+  val insert :
+    page_type ->
+    ?two_children:page_type * page_type ->
+    key_type ->
+    val_type ->
+    unit
+
+  val fits : page_type -> key_type -> val_type -> bool
+
+  val split :
+    page_type ->
+    key_type ->
+    val_type ->
+    page_type * (key_type * val_type) * page_type
+
+  val create_new_root : page_type * (key_type * val_type) * page_type -> unit
 end

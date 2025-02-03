@@ -31,3 +31,4 @@ type page =
   | Page_data_interior of data_interior_page
   | Page_data_leaf of data_leaf_page
   | Page_translation of translation_page
+  | Page_header of header_page

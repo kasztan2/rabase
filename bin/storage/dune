@@ -1,0 +1,4 @@
+(library
+ (name storage)
+ (libraries stdint types)
+ (modules storage))
