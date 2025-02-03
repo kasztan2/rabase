@@ -8,10 +8,16 @@ let conv_var v_ast =
 let conv_iri iri =
   match iri with AST.Iri x -> Object x | _ -> failwith "not an object"
 
+let conv_integer i =
+  match i with
+  | AST.Integer x -> Literal (Types.Basic.T_Int64 x)
+  | _ -> failwith "not a 64-bit integer"
+
 let conv_var_or_object ast =
   match ast with
   | AST.Var _ -> conv_var ast
   | AST.Iri _ -> conv_iri ast
+  | AST.Integer _ -> conv_integer ast
   | _ -> failwith "neither var nor object"
 
 let conv_vars vs_ast =
@@ -35,6 +41,7 @@ let get_triple_vars_strings triple =
         (function
           | AST.Iri _ -> None
           | AST.Var x -> Some x
+          | AST.Integer _ -> None
           | _ -> failwith "not a var or iri")
         l
       |> StringSet.of_list

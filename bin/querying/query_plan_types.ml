@@ -1,4 +1,8 @@
-type var_or_object = Var of string | Object of string [@@deriving show]
+type var_or_object =
+  | Var of string
+  | Object of string
+  | Literal of Types.Basic.basic_types
+[@@deriving show]
 
 type concrete_data = (var_or_object * var_or_object * var_or_object) list
 [@@deriving show]
@@ -8,7 +12,7 @@ type query_plan =
   | CrossJoin of query_plan * query_plan
   | StdJoin of query_plan * query_plan * var_or_object list
   | SelectCols of query_plan * var_or_object list
-  | Limit of query_plan * int
+  | Limit of query_plan * int64
   | Clear
   | InsertData of concrete_data
   | DeleteData of concrete_data

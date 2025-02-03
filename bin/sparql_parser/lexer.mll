@@ -29,7 +29,7 @@ rule read =
     | "}" {RBRACE}
     | "*" {STAR}
     | "." {DOT}
-    | int {INTEGER (int_of_string (Lexing.lexeme lexbuf))}
+    | int {INTEGER (Int64.of_string (Lexing.lexeme lexbuf))}
     | iriref {IRIREF (Lexing.lexeme lexbuf)}
     | var {VAR (let l=Lexing.lexeme lexbuf in String.sub l 1 ((String.length l)-1))}
     | eof {EOF}

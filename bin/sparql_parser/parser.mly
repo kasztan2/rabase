@@ -13,7 +13,7 @@
 
 %token <string> IRIREF
 %token <string> VAR
-%token <int> INTEGER
+%token <int64> INTEGER
 
 %token EOF
 
@@ -51,12 +51,16 @@ let triple_graph_pattern :=
 let var_or_term :=
   | var
   | term
+  | literal
 
 let var :=
   | v=VAR; {Var v}
 
 let term :=
   | i=IRIREF; {Iri i}
+
+let literal :=
+  | n=INTEGER; {Integer n}
 
 let solution_modifier :=
   | LIMIT; v=INTEGER; {Limit v}

@@ -29,7 +29,9 @@
   (opium
    (>= 0.20.0))
   (ppx_deriving
-   (>= 6.0.3)))
+   (>= 6.0.3))
+  (ppx_import
+   (>= 1.11.0)))
  (tags
   (topics "to describe" your project)))
 

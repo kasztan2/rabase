@@ -1,4 +1,7 @@
-type var_or_object = Var of string | Object of string
+type var_or_object =
+  | Var of string
+  | Object of string
+  | Literal of Types.Basic.basic_types
 
 val pp_var_or_object : Format.formatter -> var_or_object -> unit
 val show_var_or_object : var_or_object -> string
@@ -13,7 +16,7 @@ type query_plan =
   | CrossJoin of query_plan * query_plan
   | StdJoin of query_plan * query_plan * var_or_object list
   | SelectCols of query_plan * var_or_object list
-  | Limit of query_plan * int
+  | Limit of query_plan * int64
   | Clear
   | InsertData of concrete_data
   | DeleteData of concrete_data
