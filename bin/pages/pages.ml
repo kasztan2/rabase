@@ -1,0 +1,2 @@
+include Translation_page_handlers
+module Page_handler = Page_handler
