@@ -83,3 +83,7 @@ let add_translation_page new_page =
 let add_root_translation_from_id_page new_page =
   let page_num = add_translation_page new_page in
   change_root 6 page_num
+
+let add_root_translation_from_value_page new_page =
+  let page_num = add_translation_page new_page in
+  change_root 7 page_num
