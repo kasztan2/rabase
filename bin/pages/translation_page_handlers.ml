@@ -28,9 +28,11 @@ module TranslationFromID : PageHandler = struct
       | Some x -> x
       | None -> List.length page.items
     in
-    let child_page_num = List.nth page.child_page_numbers ind in
-    (*TODO None if error?*)
-    Some child_page_num
+    match List.is_empty page.child_page_numbers with
+    | true -> None
+    | false ->
+        let child_page_num = List.nth page.child_page_numbers ind in
+        Some child_page_num
 
   let is_leaf (page : page_type) =
     let page = S.get_translation_page page in
@@ -171,9 +173,11 @@ module TranslationFromValue : PageHandler = struct
       | Some x -> x
       | None -> List.length page.items
     in
-    let child_page_num = List.nth page.child_page_numbers ind in
-    (*TODO None if error?*)
-    Some child_page_num
+    match List.is_empty page.child_page_numbers with
+    | true -> None
+    | false ->
+        let child_page_num = List.nth page.child_page_numbers ind in
+        Some child_page_num
 
   let is_leaf (page : page_type) =
     let page = S.get_translation_page page in

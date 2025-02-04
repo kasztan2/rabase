@@ -23,14 +23,19 @@ let into_var_or_id x =
       | Some x -> Id (BTree_from_value.conv_from_val_type x))
 
 let index_scan x y z =
-  ignore x;
-  ignore y;
-  ignore z
+  let x = into_var_or_id x in
+  let y = into_var_or_id y in
+  let z = into_var_or_id z in
+  (*TODO continue writing*)
+  match (x, y, z) with
+  | Id _, Id _, Id _ -> failwith "TODO"
+  | _ -> { var_names = []; rows = [] }
 
 let vars_to_strings vars =
   List.map (function Var x -> x | _ -> failwith "not a var") vars
 
 let limit n { var_names; rows } =
+  let n = Int64.to_int n in
   { var_names; rows = List.drop (List.length rows - n) rows }
 
 let add_indexes l = List.mapi (fun i x -> (i, x)) l

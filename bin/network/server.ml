@@ -21,7 +21,9 @@ let query_logic query_m =
   let%lwt () =
     Lwt_io.printl (Querying.Query_plan_types.show_query_plan query_plan)
   in
-  Lwt.return "Parsed"
+  let result = Querying.Execute.execute query_plan in
+  let%lwt () = Lwt_io.printl (Querying.Dataframe.show_dataframe result) in
+  Lwt.return "Executed"
 
 let query req =
   let query_m = Request.query "query" req in

@@ -20,11 +20,18 @@ let rec execute_select query_plan =
       Actions.limit n v
   | _ -> failwith "modifying not permitted in select"
 
+let empty_df = { var_names = []; rows = [] }
+
 let execute_update query_plan =
+  (*TODO implement*)
   match query_plan with
-  | Clear -> ()
-  | InsertData data -> ()
-  | DeleteData data -> ()
+  | Clear -> empty_df
+  | InsertData data ->
+      ignore data;
+      empty_df
+  | DeleteData data ->
+      ignore data;
+      empty_df
   | _ -> failwith "selecting not permitted in update"
 
 let execute query_plan =
