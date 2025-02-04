@@ -1,6 +1,32 @@
 open Dataframe
 open Query_plan_types
 
+type id_or_var = Id of Stdint.uint64 | VarName of string
+
+module BTree_from_id = Algo.B_tree.Make (Pages.TranslationFromID)
+module BTree_from_value = Algo.B_tree.Make (Pages.TranslationFromValue)
+
+let into_basic_type x =
+  match x with
+  | Var _ -> failwith "cannot convert a var into basic type"
+  | Object x -> Types.Basic.T_Iri x |> BTree_from_value.conv_to_key_type
+  | Literal x -> BTree_from_value.conv_to_key_type x
+
+let into_var_or_id x =
+  match x with
+  | Var s -> VarName s
+  | x -> (
+      let x : BTree_from_value.key_type = into_basic_type x in
+      let id : BTree_from_value.val_type option = BTree_from_value.find x in
+      match id with
+      | None -> failwith "a literal wasn't found"
+      | Some x -> Id (BTree_from_value.conv_from_val_type x))
+
+let index_scan x y z =
+  ignore x;
+  ignore y;
+  ignore z
+
 let vars_to_strings vars =
   List.map (function Var x -> x | _ -> failwith "not a var") vars
 

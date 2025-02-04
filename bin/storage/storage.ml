@@ -51,6 +51,11 @@ let change_root index_type new_root_page_num =
            })
   | _ -> failwith "not a header page at index 0"
 
+let get_root index_type =
+  match Hashtbl.find pages (u32_of_int 0) with
+  | Page_header { list_of_indexes; _ } -> List.nth list_of_indexes index_type
+  | _ -> failwith "not a header page at index 0"
+
 let page_autoincrement () =
   match Hashtbl.find pages (u32_of_int 0) with
   | Page_header
@@ -87,3 +92,6 @@ let add_root_translation_from_id_page new_page =
 let add_root_translation_from_value_page new_page =
   let page_num = add_translation_page new_page in
   change_root 7 page_num
+
+let get_root_translation_from_id () = get_root 6
+let get_root_translation_from_value () = get_root 7

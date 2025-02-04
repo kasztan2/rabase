@@ -2,5 +2,5 @@
  (name querying)
  (preprocess
   (pps ppx_deriving.show))
- (libraries sparql_parser types stdint)
+ (libraries sparql_parser types stdint algo pages)
  (modules query_plan query_plan_types dataframe actions))

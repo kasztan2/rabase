@@ -10,6 +10,8 @@ module TranslationFromID : PageHandler = struct
   (** ok, so this type is kind of unnecessary now, but let's keep it just in
       case *)
 
+  let get_root () = S.get_root_translation_from_id ()
+
   let mem (page : page_type) key =
     let page = S.get_translation_page page in
     List.exists (fun (id, _val) -> id == key) page.items
@@ -135,6 +137,12 @@ module TranslationFromID : PageHandler = struct
       { is_from_id = true; child_page_numbers = [ p1; p2 ]; items = [ item ] }
     in
     S.add_root_translation_from_id_page new_page
+
+  let conv_to_key_type (_ : Types.Basic.basic_types) =
+    failwith "cannot convert a basic type to key_type of uint64"
+
+  let conv_from_val_type (_ : val_type) =
+    failwith "cannot convert a val_type value to uint64"
 end
 
 module TranslationFromValue : PageHandler = struct
@@ -144,6 +152,8 @@ module TranslationFromValue : PageHandler = struct
   type page_type = Stdint.uint32
   (** ok, so this type is kind of unnecessary now, but let's keep it just in
       case *)
+
+  let get_root () = S.get_root_translation_from_value ()
 
   let mem (page : page_type) key =
     let page = S.get_translation_page page in
@@ -274,4 +284,7 @@ module TranslationFromValue : PageHandler = struct
       { is_from_id = true; child_page_numbers = [ p1; p2 ]; items = [ item ] }
     in
     S.add_root_translation_from_value_page new_page
+
+  let conv_to_key_type (x : Types.Basic.basic_types) = (x : key_type)
+  let conv_from_val_type (x : val_type) = (x : Stdint.uint64)
 end

@@ -3,6 +3,9 @@ module type PageHandler = sig
   type val_type
   type page_type
 
+  val conv_to_key_type : Types.Basic.basic_types -> key_type
+  val conv_from_val_type : val_type -> Stdint.uint64
+  val get_root : unit -> page_type
   val mem : page_type -> key_type -> bool
   val get_val : page_type -> key_type -> val_type option
   val get_child : page_type -> key_type -> page_type option
