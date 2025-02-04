@@ -79,6 +79,10 @@ let graph_group_pattern_no_vars :=
 let graph_pattern_no_vars :=
   | p=triple_graph_pattern_no_vars; DOT; {p}
 
+let not_var :=
+  | term
+  | literal
+
 let triple_graph_pattern_no_vars :=
-  | t1=term; t2=term; t3=term; {TripleGraphPattern(t1, t2, t3)}
+  | t1=not_var; t2=not_var; t3=not_var; {TripleGraphPattern(t1, t2, t3)}
 
