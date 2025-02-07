@@ -25,3 +25,5 @@ type page =
   | Page_data of data_page
   | Page_translation of translation_page
   | Page_header of header_page
+
+val show_page : page -> string

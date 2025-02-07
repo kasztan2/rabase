@@ -140,11 +140,19 @@ module TranslationFromID : TranslationPageHandler = struct
     in
     S.add_root_translation_from_id_page new_page
 
-  let conv_to_key_type (_ : Types.Basic.basic_types) =
-    failwith "cannot convert a basic type to key_type of uint64"
+  let conv_basic_to_key (_ : Types.Basic.basic_types) : key_type =
+    failwith "wrong type"
 
-  let conv_from_val_type (_ : val_type) =
-    failwith "cannot convert a val_type value to uint64"
+  let conv_uint64_to_key (x : Stdint.uint64) : key_type = x
+
+  let conv_key_to_basic (_ : key_type) : Types.Basic.basic_types =
+    failwith "wrong type"
+
+  let conv_key_to_uint64 (x : key_type) : Stdint.uint64 = x
+  let conv_uint64_to_val (_ : Stdint.uint64) : val_type = failwith "wrong type"
+  let conv_basic_to_val (x : Types.Basic.basic_types) : val_type = x
+  let conv_val_to_uint64 (_ : val_type) : Stdint.uint64 = failwith "wrong type"
+  let conv_val_to_basic (x : val_type) : Types.Basic.basic_types = x
 end
 
 module TranslationFromValue : TranslationPageHandler = struct
@@ -204,7 +212,7 @@ module TranslationFromValue : TranslationPageHandler = struct
     in
     let new_page =
       {
-        is_from_id = true;
+        is_from_id = false;
         child_page_numbers = new_child_page_numbers;
         items = new_items;
       }
@@ -263,14 +271,14 @@ module TranslationFromValue : TranslationPageHandler = struct
     in
     let left_page =
       {
-        is_from_id = true;
+        is_from_id = false;
         child_page_numbers = left_children;
         items = left_items;
       }
     in
     let right_page =
       {
-        is_from_id = true;
+        is_from_id = false;
         child_page_numbers = right_children;
         items = right_items;
       }
@@ -285,10 +293,21 @@ module TranslationFromValue : TranslationPageHandler = struct
     let i1, i2 = item in
     let item = (i2, i1) in
     let new_page =
-      { is_from_id = true; child_page_numbers = [ p1; p2 ]; items = [ item ] }
+      { is_from_id = false; child_page_numbers = [ p1; p2 ]; items = [ item ] }
     in
     S.add_root_translation_from_value_page new_page
 
-  let conv_to_key_type (x : Types.Basic.basic_types) = (x : key_type)
-  let conv_from_val_type (x : val_type) = (x : Stdint.uint64)
+  let conv_basic_to_key (x : Types.Basic.basic_types) : key_type = x
+  let conv_uint64_to_key (_ : Stdint.uint64) : key_type = failwith "wrong type"
+  let conv_key_to_basic (x : key_type) : Types.Basic.basic_types = x
+  let conv_key_to_uint64 (_ : key_type) : Stdint.uint64 = failwith "wrong type"
+  let conv_uint64_to_val (x : Stdint.uint64) : val_type = x
+
+  let conv_basic_to_val (_ : Types.Basic.basic_types) : val_type =
+    failwith "wrong type"
+
+  let conv_val_to_uint64 (x : val_type) : Stdint.uint64 = x
+
+  let conv_val_to_basic (_ : val_type) : Types.Basic.basic_types =
+    failwith "wrong type"
 end

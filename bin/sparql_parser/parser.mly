@@ -17,10 +17,13 @@
 
 %token EOF
 
-%start <Sparql_ast.query> query
-%start <Sparql_ast.update> update
+%start <Sparql_ast.query> query_or_update
 
 %%
+
+let query_or_update :=
+  | q=query; {q}
+  | u=update; {u}
 
 let query :=
   | q=select_query; EOF; { Query q }
@@ -66,12 +69,12 @@ let solution_modifier :=
   | LIMIT; v=INTEGER; {Limit v}
 
 let update :=
-  | h=update_helper; EOF; {Update h}
+  | h=update_helper; EOF; { Update h }
 
 let update_helper :=
   | INSERT; DATA; g=graph_group_pattern_no_vars; {InsertData g}
   | DELETE; DATA; g=graph_group_pattern_no_vars; {DeleteData g}
-  | CLEAR; {Clear}
+  | CLEAR; { Clear }
 
 let graph_group_pattern_no_vars :=
   | LBRACE; p=graph_pattern_no_vars+; RBRACE; {GroupPatterns p}

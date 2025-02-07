@@ -2,24 +2,22 @@ open Core
 open Lexer
 open Lexing
 
-let print_position outx lexbuf =
+let print_position (out : Format.formatter) (lexbuf : Lexing.lexbuf) : unit =
   let pos = lexbuf.lex_curr_p in
-  fprintf outx "%s:%d:%d" pos.pos_fname pos.pos_lnum
+  Format.fprintf out "%s:%d:%d" pos.pos_fname pos.pos_lnum
     (pos.pos_cnum - pos.pos_bol + 1)
 
 let parse_with_error lexbuf =
-  try Some (Parser.query Lexer.read lexbuf) with
+  try Some (Parser.query_or_update Lexer.read lexbuf) with
   | SyntaxError msg ->
-      fprintf stderr "%a: %s\n" print_position lexbuf msg;
-      None
+      let err_msg = Format.asprintf "%a: %s" print_position lexbuf msg in
+      failwith err_msg
   | Parser.Error ->
-      fprintf stderr "%a: syntax error\n" print_position lexbuf;
-      (* exit (-1) *)
-      None
+      let err_msg =
+        Format.asprintf "%a: syntax error\n" print_position lexbuf
+      in
+      failwith err_msg
 
 let parse s =
   let lexbuf = Lexing.from_string s in
-  (*match parse_with_error lexbuf with
-    | None -> print_string "None"
-    | Some _ -> print_string "Some";*)
   parse_with_error lexbuf

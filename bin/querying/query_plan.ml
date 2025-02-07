@@ -20,6 +20,12 @@ let conv_var_or_object ast =
   | AST.Integer _ -> conv_integer ast
   | _ -> failwith "neither var nor object"
 
+let conv_concrete a =
+  match a with
+  | AST.Iri x -> Literal (Types.Basic.T_Iri x)
+  | AST.Integer _ -> conv_integer a
+  | _ -> failwith "not concrete"
+
 let conv_vars vs_ast =
   match vs_ast with
   | AST.Vars vars ->
@@ -104,9 +110,9 @@ let conv_data ast =
       List.map
         (function
           | AST.TripleGraphPattern (t1, t2, t3) ->
-              let t1 = conv_iri t1 in
-              let t2 = conv_iri t2 in
-              let t3 = conv_iri t3 in
+              let t1 = conv_concrete t1 in
+              let t2 = conv_concrete t2 in
+              let t3 = conv_concrete t3 in
               (t1, t2, t3)
           | _ -> failwith "not a triple pattern")
         ps

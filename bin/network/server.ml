@@ -23,6 +23,7 @@ let query_logic query_m =
   in
   let result = Querying.Execute.execute query_plan in
   let%lwt () = Lwt_io.printl (Querying.Dataframe.show_dataframe result) in
+  let%lwt () = Lwt_io.printl (Storage.debug ()) in
   Lwt.return "Executed"
 
 let query req =

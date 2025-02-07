@@ -1,0 +1,8 @@
+module BTree_from_id = Algo.B_tree.Make (Pages.TranslationFromID)
+module BTree_from_value = Algo.B_tree.Make (Pages.TranslationFromValue)
+module BPTree_SPO = Algo.Bp_tree.Make (Pages.DataSPO)
+module BPTree_SOP = Algo.Bp_tree.Make (Pages.DataSOP)
+module BPTree_PSO = Algo.Bp_tree.Make (Pages.DataPSO)
+module BPTree_POS = Algo.Bp_tree.Make (Pages.DataPOS)
+module BPTree_OSP = Algo.Bp_tree.Make (Pages.DataOSP)
+module BPTree_OPS = Algo.Bp_tree.Make (Pages.DataOPS)

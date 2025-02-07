@@ -1,16 +1,14 @@
 open Dataframe
 open Query_plan_types
+open Trees
 
 type id_or_var = Id of Stdint.uint64 | VarName of string
-
-module BTree_from_id = Algo.B_tree.Make (Pages.TranslationFromID)
-module BTree_from_value = Algo.B_tree.Make (Pages.TranslationFromValue)
 
 let into_basic_type x =
   match x with
   | Var _ -> failwith "cannot convert a var into basic type"
-  | Object x -> Types.Basic.T_Iri x |> BTree_from_value.conv_to_key_type
-  | Literal x -> BTree_from_value.conv_to_key_type x
+  | Object x -> Types.Basic.T_Iri x |> BTree_from_value.conv_basic_to_key
+  | Literal x -> BTree_from_value.conv_basic_to_key x
 
 let into_var_or_id x =
   match x with
@@ -20,16 +18,42 @@ let into_var_or_id x =
       let id : BTree_from_value.val_type option = BTree_from_value.find x in
       match id with
       | None -> failwith "a literal wasn't found"
-      | Some x -> Id (BTree_from_value.conv_from_val_type x))
+      | Some x -> Id (BTree_from_value.conv_val_to_uint64 x))
+
+let into_df fields rows =
+  let indexes =
+    List.mapi (fun i x -> (i, x)) fields
+    |> List.filter_map (function i, VarName _ -> Some i | _ -> None)
+  in
+  let vars =
+    List.filter_map (function VarName x -> Some x | _ -> None) fields
+  in
+  let new_rows =
+    List.map
+      (fun (x, y, z) ->
+        let row = [ x; y; z ] in
+        List.filteri (fun i _ -> List.mem i indexes) row)
+      rows
+  in
+  { var_names = vars; rows = new_rows }
 
 let index_scan x y z =
   let x = into_var_or_id x in
   let y = into_var_or_id y in
   let z = into_var_or_id z in
   (*TODO continue writing*)
-  match (x, y, z) with
-  | Id _, Id _, Id _ -> failwith "TODO"
-  | _ -> { var_names = []; rows = [] }
+  let res =
+    match (x, y, z) with
+    | Id x, VarName _, VarName _ -> BPTree_SPO.find (Some x, None, None)
+    | Id x, Id y, VarName _ -> BPTree_SPO.find (Some x, Some y, None)
+    | Id x, VarName _, Id z -> BPTree_SOP.find (Some x, None, Some z)
+    | VarName _, VarName _, Id z -> BPTree_OPS.find (None, None, Some z)
+    | VarName _, Id y, VarName _ -> BPTree_PSO.find (None, Some y, None)
+    | VarName _, Id y, Id z -> BPTree_PSO.find (None, Some y, Some z)
+    | VarName _, VarName _, VarName _ -> BPTree_SPO.find (None, None, None)
+    | _ -> []
+  in
+  into_df [ x; y; z ] res
 
 let vars_to_strings vars =
   List.map (function Var x -> x | _ -> failwith "not a var") vars
