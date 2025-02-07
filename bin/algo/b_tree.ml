@@ -23,12 +23,16 @@ module Make (P : TranslationPageHandler) = struct
   type page_type = P.page_type
 
   let rec find_helper node x =
+    Logs.debug (fun m -> m "B-tree find_helper");
     match P.mem node x with
     | true -> P.get_val node x
     | false -> (
         match P.get_child node x with None -> None | Some c -> find_helper c x)
 
-  let find x = find_helper (P.get_root ()) x
+  let find x =
+    Logs.debug (fun m -> m "B-tree find");
+    let root = P.get_root () in
+    find_helper root x
 
   let check_and_split node ?two_children k v =
     match P.fits node k v with

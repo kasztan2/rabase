@@ -15,8 +15,11 @@ let transform_to_id v =
   match v with
   | Object _ -> failwith "why did I introduce this type?"
   | Literal x -> (
+      Logs.debug (fun m -> m "Transforming %s into id" (show_var_or_object v));
       match BTree_from_value.find (BTree_from_value.conv_basic_to_key x) with
       | None ->
+          Logs.debug (fun m ->
+              m "Not found in translation index, creating a new entry and id");
           let id = S.get_translation_id () in
           BTree_from_id.insert
             (BTree_from_id.conv_uint64_to_key id)
@@ -25,7 +28,9 @@ let transform_to_id v =
             (BTree_from_value.conv_basic_to_key x)
             (BTree_from_value.conv_uint64_to_val id);
           id
-      | Some r -> BTree_from_value.conv_val_to_uint64 r)
+      | Some r ->
+          Logs.debug (fun m -> m "Found in translation index");
+          BTree_from_value.conv_val_to_uint64 r)
   | _ -> failwith "cannot be transformed to id"
 
 let insert_data data =

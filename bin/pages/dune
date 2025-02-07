@@ -1,4 +1,4 @@
 (library
  (name pages)
- (libraries stdint types utils storage)
+ (libraries stdint types utils storage logs)
  (modules pages page_handler translation_page_handlers data_page_handlers helpers))

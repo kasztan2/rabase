@@ -1,6 +1,6 @@
 (library
  (name types)
  (preprocess
-  (staged_pps ppx_import ppx_deriving.show))
+  (staged_pps ppx_import ppx_deriving.show ppx_deriving.eq))
  (libraries stdint)
  (modules basic page_types))

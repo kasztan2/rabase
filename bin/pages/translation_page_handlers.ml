@@ -164,14 +164,21 @@ module TranslationFromValue : TranslationPageHandler = struct
       case *)
 
   let get_root () = S.get_root_translation_from_value ()
+  let eq x y = compare x y == 0
 
   let mem (page : page_type) key =
     let page = S.get_translation_page page in
-    List.exists (fun (_id, value) -> value == key) page.items
+    let res = List.exists (fun (_id, value) -> eq value key) page.items in
+    Logs.debug (fun m ->
+        m "TranslationFromValue mem: page %s, key %s -> %b"
+          (show_page (Types.Page_types.Page_translation page))
+          (Types.Basic.show_basic_types key)
+          res);
+    res
 
   let get_val (page : page_type) key =
     let page = S.get_translation_page page in
-    let i, _ = List.find (fun (_id, value) -> value == key) page.items in
+    let i, _ = List.find (fun (_id, value) -> eq value key) page.items in
     Some i
 
   let get_child (page : page_type) key =

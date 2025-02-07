@@ -2,7 +2,7 @@
  (name querying)
  (preprocess
   (pps ppx_deriving.show))
- (libraries sparql_parser types stdint algo pages)
+ (libraries sparql_parser types stdint algo pages logs)
  (modules
   query_plan
   query_plan_types
