@@ -37,7 +37,8 @@ let execute_update query_plan =
   | _ -> failwith "selecting not permitted in update"
 
 let execute query_plan =
-  match query_plan with
+  (match query_plan with
   | IndexScan _ | CrossJoin _ | StdJoin _ | SelectCols _ | Limit _ ->
       execute_select query_plan
-  | Clear | InsertData _ | DeleteData _ -> execute_update query_plan
+  | Clear | InsertData _ | DeleteData _ -> execute_update query_plan)
+  |> Select_actions.df_to_values

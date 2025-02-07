@@ -1,5 +1,5 @@
 open Init.File_basic
-open Opium
+open Fixed_opium
 
 let info _req = Response.of_plain_text "Rabase server" |> Lwt.return
 
@@ -22,7 +22,7 @@ let query_logic query_m =
     Lwt_io.printl (Querying.Query_plan_types.show_query_plan query_plan)
   in
   let result = Querying.Execute.execute query_plan in
-  let%lwt () = Lwt_io.printl (Querying.Dataframe.show_dataframe result) in
+  let%lwt () = Lwt_io.printl (Csv.res_to_csv result) in
   let%lwt () = Lwt_io.printl (Storage.debug ()) in
   Lwt.return "Executed"
 
@@ -46,5 +46,10 @@ let run port =
   close_in ic;
   close_out oc;
   print_int port;
-  App.empty |> App.get "/info" info |> App.get "/" query |> App.port port
-  |> App.start_multicore
+  let app =
+    App.empty |> App.get "/info" info |> App.get "/" query |> App.port port
+  in
+  match App.run_command' app with
+  | `Ok (app : unit Lwt.t) -> Lwt_main.run app
+  | `Error -> exit 1
+  | `Not_running -> exit 0

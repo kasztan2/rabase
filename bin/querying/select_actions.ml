@@ -124,3 +124,14 @@ let std_join df1 df2 vars =
   in
   let new_vars = remove_duplicates crossed_vars in
   { var_names = new_vars; rows = new_rows }
+
+let back_into_value x =
+  match BTree_from_id.find (BTree_from_id.conv_uint64_to_key x) with
+  | None -> failwith "cannot find a value with given id"
+  | Some x -> BTree_from_id.conv_val_to_basic x
+
+let df_to_values { var_names; rows } =
+  let new_rows =
+    List.map (fun row -> List.map (fun x -> back_into_value x) row) rows
+  in
+  (var_names, new_rows)
