@@ -1,4 +1,4 @@
 (library
  (name algo)
  (libraries pages)
- (modules b_tree))
+ (modules b_tree bp_tree))

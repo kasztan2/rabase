@@ -1,5 +1,4 @@
 type triple = Stdint.uint64 * Stdint.uint64 * Stdint.uint64
-type index_type = Stdint.uint8
 type page_num = Stdint.uint32
 
 type header_page = {
@@ -9,15 +8,10 @@ type header_page = {
   list_of_indexes : page_num list;
 }
 
-type data_interior_page = {
-  index_type : index_type;
+type data_page = {
+  index_type : int;
   child_page_numbers : page_num list;
-  triples : triple list;
-}
-
-type data_leaf_page = {
-  index_type : index_type;
-  sibling_page_number : page_num;
+  sibling_page_number : page_num option;
   triples : triple list;
 }
 
@@ -28,7 +22,6 @@ type translation_page = {
 }
 
 type page =
-  | Page_data_interior of data_interior_page
-  | Page_data_leaf of data_leaf_page
+  | Page_data of data_page
   | Page_translation of translation_page
   | Page_header of header_page

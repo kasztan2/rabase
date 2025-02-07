@@ -11,7 +11,7 @@ module type S = sig
   val conv_from_val_type : val_type -> Stdint.uint64
 end
 
-module Make (P : PageHandler) = struct
+module Make (P : TranslationPageHandler) = struct
   type key_type = P.key_type
   type val_type = P.val_type
   type page_type = P.page_type

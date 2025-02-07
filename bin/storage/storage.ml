@@ -18,10 +18,11 @@ List.iter
   (fun i ->
     Hashtbl.add pages
       (u32_of_int (i + 1))
-      (Page_data_leaf
+      (Page_data
          {
-           index_type = Stdint.Uint8.of_int i;
-           sibling_page_number = u32_of_int 0;
+           index_type = i;
+           child_page_numbers = [];
+           sibling_page_number = None;
            triples = [];
          }))
   [ 0; 1; 2; 3; 4; 5 ]
@@ -73,15 +74,24 @@ let page_autoincrement () =
 let get_translation_page page_num =
   let res = Hashtbl.find pages page_num in
   match res with
-  | Types.Page_types.Page_translation p -> p
+  | Page_translation p -> p
   | _ -> failwith "not a translation page"
 
 let update_translation_page page_num new_page =
   Hashtbl.replace pages page_num (Page_translation new_page)
 
+let update_data_page page_num new_page =
+  Hashtbl.replace pages page_num (Page_data new_page)
+
 let add_translation_page new_page =
   let page_num = Stdint.Uint32.of_int (Hashtbl.length pages) in
   Hashtbl.add pages page_num (Page_translation new_page);
+  page_autoincrement ();
+  page_num
+
+let add_data_page new_page =
+  let page_num = Stdint.Uint32.of_int (Hashtbl.length pages) in
+  Hashtbl.add pages page_num (Page_data new_page);
   page_autoincrement ();
   page_num
 
@@ -95,3 +105,7 @@ let add_root_translation_from_value_page new_page =
 
 let get_root_translation_from_id () = get_root 6
 let get_root_translation_from_value () = get_root 7
+
+let get_data_page page_num =
+  let res = Hashtbl.find pages page_num in
+  match res with Page_data p -> p | _ -> failwith "not a data page"

@@ -2,7 +2,7 @@ open Page_handler
 open Types.Page_types
 module S = Storage
 
-module TranslationFromID : PageHandler = struct
+module TranslationFromID : TranslationPageHandler = struct
   type key_type = Stdint.uint64
   type val_type = Types.Basic.basic_types
 
@@ -147,7 +147,7 @@ module TranslationFromID : PageHandler = struct
     failwith "cannot convert a val_type value to uint64"
 end
 
-module TranslationFromValue : PageHandler = struct
+module TranslationFromValue : TranslationPageHandler = struct
   type key_type = Types.Basic.basic_types
   type val_type = Stdint.uint64
 

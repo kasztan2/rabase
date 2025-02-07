@@ -16,4 +16,11 @@ let split_with_middle pos l =
   let m = List.nth l pos in
   (left, m, right)
 
+let split_half_and_copy l =
+  let half = List.length l / 2 in
+  let xs = List.take half l in
+  let ys = List.drop half l in
+  let med = List.hd ys in
+  (xs, med, ys)
+
 let split n l = (List.take n l, List.drop n l)

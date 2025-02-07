@@ -9,4 +9,4 @@ module type S = sig
   val conv_from_val_type : val_type -> Stdint.uint64
 end
 
-module Make (_ : Pages.Page_handler.PageHandler) : S
+module Make (_ : Pages.Page_handler.TranslationPageHandler) : S
