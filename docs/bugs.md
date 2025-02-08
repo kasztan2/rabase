@@ -1,7 +1,5 @@
 # Known bugs
 
-
-
 # To verify
 
 ## ID comparison
