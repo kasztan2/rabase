@@ -1,4 +1,5 @@
 (library
  (name init)
+ (public_name rabase.init)
  (libraries io)
  (modules file_basic header_template))

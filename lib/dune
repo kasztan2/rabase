@@ -1,2 +1,4 @@
 (library
- (name rabase))
+ (name rabase)
+ (public_name rabase)
+ (libraries network))

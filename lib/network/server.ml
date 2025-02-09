@@ -42,6 +42,9 @@ let query req =
   in
   Response.of_plain_text res |> Lwt.return
 
+let create_app port =
+  App.empty |> App.get "/info" info |> App.get "/" query |> App.port port
+
 let run port =
   let path_r = ref None in
   let anon_fun s = path_r := Some s in
@@ -54,7 +57,7 @@ let run port =
   close_out oc;
   print_int port;
   let app =
-    App.empty |> App.get "/info" info |> App.get "/" query |> App.port port
+    create_app port
   in
   Logs.info (fun m -> m "Starting the server");
   match App.run_command' app with

@@ -1,3 +1,4 @@
 (library
  (name io)
+ (public_name rabase.io)
  (modules io))

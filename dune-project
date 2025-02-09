@@ -31,7 +31,9 @@
   (ppx_deriving
    (>= 6.0.3))
   (ppx_import
-   (>= 1.11.0)))
+   (>= 1.11.0))
+  (alcotest
+   (>= 1.8.0)))
  (tags
   (topics "to describe" your project)))
 

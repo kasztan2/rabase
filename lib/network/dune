@@ -1,4 +1,5 @@
 (library
  (name network)
+ (public_name rabase.network)
  (preprocess (pps lwt_ppx))
  (libraries init opium sparql_parser querying types))

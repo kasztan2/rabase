@@ -1,4 +1,5 @@
 (library
  (name algo)
+ (public_name rabase.algo)
  (libraries pages logs)
  (modules b_tree bp_tree))

@@ -1,5 +1,4 @@
 (executable
  (public_name rabase)
  (name main)
- (preprocess (pps ppx_deriving.show))
- (libraries rabase network logging))
+ (libraries rabase rabase.logging))

@@ -1,4 +1,5 @@
 (library
  (name storage)
+ (public_name rabase.storage)
  (libraries stdint types)
  (modules storage))
