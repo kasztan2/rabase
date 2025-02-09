@@ -1,3 +1,3 @@
 let () =
-  Logging.init ();
+  Logging.init false;
   Network.Server.run 8080

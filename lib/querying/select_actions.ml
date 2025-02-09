@@ -72,6 +72,8 @@ let select_cols vars { var_names; rows } =
     |> List.filter (fun (_i, x) -> List.mem x vars)
     |> only_indexes
   in
+  if List.length indexes < List.length vars then
+    failwith "some variable was not found";
   let row_transform =
    fun r ->
     add_indexes r
@@ -93,17 +95,22 @@ let cross_join { var_names = var_names1; rows = rows1 }
 
 let std_join df1 df2 vars =
   let vars = vars_to_strings vars in
+  Logs.debug (fun m -> m "std_join on vars: %s" (String.concat "," vars));
   let { var_names = crossed_vars; rows = crossed_rows } = cross_join df1 df2 in
+  Logs.debug (fun m -> m "cross_join vars: %s" (String.concat "," crossed_vars));
   let crossed_vars_with_indexes = add_indexes crossed_vars in
   let find_indexes =
    fun x ->
-    List.find_all (fun (_i, y) -> y == x) crossed_vars_with_indexes
+    List.find_all (fun (_i, y) -> y = x) crossed_vars_with_indexes
     |> List.map (fun (i, _v) -> i)
   in
   let index_pairs =
     List.map
       (fun v ->
         let res = find_indexes v in
+        Logs.debug (fun m ->
+            m "find_indexes of %s produced %d results: %s" v (List.length res)
+              (String.concat "," (List.map string_of_int res)));
         match List.length res with
         | 2 -> res
         | _ -> failwith "wrong output of crossed join")
@@ -112,18 +119,23 @@ let std_join df1 df2 vars =
   in
   let is_row_ok =
    fun r ->
-    List.map (fun (x, y) -> List.nth r x == List.nth r y) index_pairs
+    List.map (fun (x, y) -> List.nth r x = List.nth r y) index_pairs
     |> List.for_all (fun b -> b)
   in
   let indexes_to_delete = List.map (fun (_a, b) -> b) index_pairs in
+  Logs.debug (fun m ->
+      m "indexes_to_delete: %s"
+        (String.concat "," (List.map string_of_int indexes_to_delete)));
   let remove_duplicates =
-   fun l -> List.filteri (fun i _x -> List.mem i indexes_to_delete) l
+   fun l -> List.filteri (fun i _x -> Bool.not (List.mem i indexes_to_delete)) l
   in
   let new_rows =
     List.filter is_row_ok crossed_rows |> List.map remove_duplicates
   in
   let new_vars = remove_duplicates crossed_vars in
-  { var_names = new_vars; rows = new_rows }
+  let output = { var_names = new_vars; rows = new_rows } in
+  Logs.debug (fun m -> m "std_join output: %s" (show_dataframe output));
+  output
 
 let back_into_value x =
   match BTree_from_id.find (BTree_from_id.conv_uint64_to_key x) with
