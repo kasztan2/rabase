@@ -4,7 +4,7 @@ open Parser
 exception SyntaxError of string
 }
 
-let int = ['1'-'9'] ['0'-'9']*
+let int = (['1'-'9'] ['0'-'9']*) | '0'
 
 let word = ['a'-'z']+
 

@@ -1,3 +1,4 @@
 (test
  (name test_rabase)
- (libraries ounit2 rabase))
+ (preprocess (pps lwt_ppx))
+ (libraries ounit2 rabase network alcotest lwt))
