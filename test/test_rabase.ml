@@ -33,32 +33,51 @@ let test_seq_inserts _ () =
 
 let test_insert_nums _ () =
   let* _ = clear () in
-  let insert_repr x =
-    let* _ = insert ("n" ^ string_of_int x) "hasValue" (string_of_int x) in
-    Lwt.return_unit
-  in
   let insert_div x =
     let divs =
       List.init x (fun i -> i + 1) |> List.filter (fun i -> x mod i == 0)
     in
-    let perform_insert y =
-      let* _ =
-        insert ("n" ^ string_of_int x) "hasDivisor" ("n" ^ string_of_int y)
-      in
-      Lwt.return_unit
+    let q =
+      Format.asprintf "INSERT DATA {%s}"
+        (List.map (fun y -> Format.asprintf "n%d hasDivisor n%d . " x y) divs
+        |> String.concat "")
     in
-    Lwt_list.iter_s perform_insert divs
+    let* _ = send_query q in
+    Lwt.return_unit
   in
-  let lst = List.init 10 (fun i -> i + 1) in
-  let* _ = Lwt_list.iter_s insert_repr lst in
+  let lst = List.init 5000 (fun i -> i + 1) in
+  let repr_qs =
+    list_sections 100 lst
+    |> List.map (fun l ->
+           Format.asprintf "INSERT DATA {%s}"
+             (List.map (fun x -> Format.asprintf "n%d hasValue %d . " x x) l
+             |> String.concat ""))
+  in
+  let* _ =
+    Lwt_list.iter_s
+      (fun q ->
+        let* _ = send_query q in
+        Lwt.return_unit)
+      repr_qs
+  in
   let* _ = Lwt_list.iter_s insert_div lst in
   let* _, raw_data =
-    send_query "SELECT ?x WHERE {?x hasDivisor ?y . ?y hasValue 2 .}"
+    send_query
+      "SELECT ?x WHERE {?x hasDivisor ?y . ?y hasValue 2 . ?x hasDivisor ?z . \
+       ?z hasValue 3 .}"
   in
-  let data = raw_data |> String.split_on_char '\n' in
-  let _ = List.hd data in
-  let _ = List.tl data in
-  check string "e" "" raw_data;
+  let data_2_3 =
+    raw_data |> String.split_on_char '\n' |> List.sort compare |> List.tl
+    |> String.concat ""
+  in
+  let* _, raw_data =
+    send_query "SELECT ?x WHERE {?x hasDivisor ?y . ?y hasValue 6 .}"
+  in
+  let data_6 =
+    raw_data |> String.split_on_char '\n' |> List.sort compare |> List.tl
+    |> String.concat ""
+  in
+  check string "e" data_2_3 data_6;
   Lwt.return_unit
 
 let () =

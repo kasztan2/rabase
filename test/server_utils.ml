@@ -17,7 +17,7 @@ let send_query q =
   in
   let* raw_res = Ezcurl_lwt.get ~url () in
   let { code; body; _ } : Ezcurl_lwt.response =
-    match raw_res with Error _ -> failwith "error" | Ok x -> x
+    match raw_res with Error (_, x) -> failwith x | Ok x -> x
   in
   check int "Status code is 200" 200 code;
   Lwt.return (code, body)
@@ -28,3 +28,8 @@ let insert x y z =
   send_query @@ Format.asprintf "INSERT DATA {%s %s %s .}" x y z
 
 let select_all () = send_query "SELECT ?x ?y ?z {?x ?y ?z .}"
+
+let rec list_sections n l =
+  match l with
+  | [] -> []
+  | _ :: _ -> List.cons (List.take n l) (list_sections n (List.drop n l))
