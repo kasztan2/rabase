@@ -33,7 +33,13 @@
   (ppx_import
    (>= 1.11.0))
   (alcotest
-   (>= 1.8.0)))
+   (>= 1.8.0))
+  (alcotest-lwt
+   (>= 1.8.0))
+  (ezcurl
+   (>= 0.2.4))
+  (ezcurl-lwt
+   (>= 0.2.4)))
  (tags
   (topics "to describe" your project)))
 

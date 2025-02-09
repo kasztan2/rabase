@@ -8,7 +8,11 @@ let int = ('-'? ['1'-'9'] ['0'-'9']*) | '0'
 
 let word = ['a'-'z']+
 
-let iriref = word (('.'|'/') word)*
+let iriref_component = ['a'-'z''A'-'Z''0'-'9']+
+
+let iriref_sep = ['.' '/' ':']+
+
+let iriref = iriref_component (iriref_sep iriref_component)*
 
 let white = [' ' '\t']+
 
