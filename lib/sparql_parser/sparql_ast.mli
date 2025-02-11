@@ -8,6 +8,7 @@ type query =
   | Var of string
   | Iri of string
   | Integer of int64
+  | String of string
   | Limit of int64
   | Update of query
   | InsertData of query

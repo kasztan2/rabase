@@ -18,6 +18,8 @@ let white = [' ' '\t']+
 
 let var = "?" word
 
+let string = '"' [^'"']* '"'
+
 rule read =
     parse
     | white { read lexbuf }
@@ -34,6 +36,7 @@ rule read =
     | "*" {STAR}
     | "." {DOT}
     | int {INTEGER (Int64.of_string (Lexing.lexeme lexbuf))}
+    | string {STRING (Lexing.lexeme lexbuf)}
     | iriref {IRIREF (Lexing.lexeme lexbuf)}
     | var {VAR (let l=Lexing.lexeme lexbuf in String.sub l 1 ((String.length l)-1))}
     | eof {EOF}

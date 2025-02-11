@@ -13,17 +13,24 @@ let conv_integer i =
   | AST.Integer x -> Literal (Types.Basic.T_Int64 x)
   | _ -> failwith "not a 64-bit integer"
 
+let conv_string s =
+  match s with
+  | AST.String x -> Literal (Types.Basic.T_String x)
+  | _ -> failwith "not a string"
+
 let conv_var_or_object ast =
   match ast with
   | AST.Var _ -> conv_var ast
   | AST.Iri _ -> conv_iri ast
   | AST.Integer _ -> conv_integer ast
+  | AST.String _ -> conv_string ast
   | _ -> failwith "neither var nor object"
 
 let conv_concrete a =
   match a with
   | AST.Iri x -> Literal (Types.Basic.T_Iri x)
   | AST.Integer _ -> conv_integer a
+  | AST.String _ -> conv_string a
   | _ -> failwith "not concrete"
 
 let conv_vars vs_ast =

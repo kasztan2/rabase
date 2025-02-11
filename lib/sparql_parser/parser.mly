@@ -14,6 +14,7 @@
 %token <string> IRIREF
 %token <string> VAR
 %token <int64> INTEGER
+%token <string> STRING
 
 %token EOF
 
@@ -64,6 +65,7 @@ let term :=
 
 let literal :=
   | n=INTEGER; {Integer n}
+  | s=STRING; {String s}
 
 let solution_modifier :=
   | LIMIT; v=INTEGER; {Limit v}
