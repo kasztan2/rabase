@@ -55,6 +55,7 @@ let get_triple_vars_strings triple =
           | AST.Iri _ -> None
           | AST.Var x -> Some x
           | AST.Integer _ -> None
+          | AST.String _ -> None
           | _ -> failwith "not a var or iri")
         l
       |> StringSet.of_list
