@@ -1,7 +1,7 @@
 # Uruchamianie
 
 `dune exec ./bin/main.exe <nazwa_pliku>`
-Niestety `<nazwa_pliku>` jest obecnie praktycznie bez znaczenia.
+`<nazwa_pliku>` jest dowolna.
 
 # Komunikacja z serwerem
 
